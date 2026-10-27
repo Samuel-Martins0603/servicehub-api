@@ -147,7 +147,7 @@ class ServiceItemServiceTest {
         serviceItemService.delete(10L, TestData.auth(provider));
 
         assertThat(item.isActive()).isFalse();
-        verify(services, never()).delete(any());
+        verify(services, never()).delete(any(ServiceItem.class));
         verify(services, never()).deleteById(any());
     }
 
