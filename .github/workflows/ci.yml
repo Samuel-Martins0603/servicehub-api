@@ -18,4 +18,12 @@ jobs:
       # Testcontainers usa o Docker do runner; os testes definem o proprio JWT_SECRET.
       - name: Build e testes
         working-directory: servicehub-api
-        run: mvn -B verify
+        run: |
+          set +e
+          mvn -B verify 2>&1 | tee ../mvn.log
+          rc=${PIPESTATUS[0]}
+          if [ $rc -ne 0 ]; then
+            msg=$(grep -E "ERROR|FAIL|Tests run:.*(Failures: [1-9]|Errors: [1-9])|Caused by|Exception" ../mvn.log | head -60 | cut -c1-300 | sed ':a;N;$!ba;s/%/%25/g;s/\r//g;s/\n/%0A/g')
+            echo "::error title=Resumo do erro do Maven::$msg"
+          fi
+          exit $rc
