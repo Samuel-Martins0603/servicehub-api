@@ -22,7 +22,7 @@ Mapa de Construção v1.2. Esta é a lista de tarefas que guiou os commits segui
 | Schema da seção 3 por migração Flyway | `ddl-auto=create-drop`, sem migrações | `V1` baseline, `V2` users, `V3` services/orders/reviews |
 | `ddl-auto=validate` | `create-drop` | `application.properties` |
 | Exclusão lógica, `ON DELETE RESTRICT`, `CHECK`s | Inexistente | Migrações V2/V3 |
-| Prefixo `/api/v1` | Rotas `/api/servicos` | Todos os controllers |
+| Prefixo de versão (`/ServiceHub/v1`) | Rotas `/api/servicos`, sem versão | Todos os controllers |
 | Paginação (padrão 20, máx. 100) | `GET` devolvia lista inteira | `PagedModel` + `Pageable` |
 | Erros em ProblemDetail (RFC 9457) com `type`, `instance`, `timestamp` | `ApiErrorResponse` próprio | `GlobalExceptionHandler` + `Problems` |
 | Header `X-Request-Id` | Inexistente | `RequestIdFilter` |

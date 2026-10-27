@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/reviews")
+@RequestMapping("/ServiceHub/v1/reviews")
 @Tag(name = "Avaliações")
 public class ReviewController {
 

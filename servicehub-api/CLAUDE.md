@@ -16,7 +16,7 @@ H2 (padrão, modo PostgreSQL) e PostgreSQL 16 (profile `postgres` / Docker Compo
 ## Convenções
 1. Refatorar, não reescrever. Cada commit compila e passa nos testes; mensagens `feat:`, `fix:`, `refactor:`, `test:`, `docs:`.
 2. Banco só por migração `V{n+1}__descricao.sql`. Nunca editar migração aplicada. `ddl-auto=validate`.
-3. Rotas sob `/api/v1`; JSON camelCase; erros sempre em ProblemDetail (`urn:servicehub:problem:*`).
+3. Rotas sob `/ServiceHub/v1`; JSON camelCase; erros sempre em ProblemDetail (`urn:servicehub:problem:*`).
 4. Controller só delega; regra de negócio no Service; entidade JPA nunca sai na API (DTO de saída) e DTO de
    entrada nunca tem `id`, `role`, `providerId`, `clientId` ou `status`.
 5. Todo texto livre (`description`, `notes`, `comment`, `bio`) passa por `TextSanitizer`.

@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/service-requests")
+@RequestMapping("/ServiceHub/v1/service-requests")
 @Tag(name = "Ordens de serviço", description = "Contratação, ciclo de vida (máquina de estados) e avaliação")
 public class ServiceRequestController {
 
@@ -52,7 +52,7 @@ public class ServiceRequestController {
     public ResponseEntity<OrderResponse> create(@Valid @RequestBody OrderCreateRequest request,
                                                 @AuthenticationPrincipal AuthUser actor) {
         OrderResponse created = orderService.create(request, actor);
-        return ResponseEntity.created(URI.create("/api/v1/service-requests/" + created.id())).body(created);
+        return ResponseEntity.created(URI.create("/ServiceHub/v1/service-requests/" + created.id())).body(created);
     }
 
     @GetMapping
@@ -90,6 +90,6 @@ public class ServiceRequestController {
     public ResponseEntity<ReviewResponse> review(@PathVariable Long id, @Valid @RequestBody ReviewCreateRequest request,
                                                  @AuthenticationPrincipal AuthUser actor) {
         ReviewResponse created = reviewService.create(id, request, actor);
-        return ResponseEntity.created(URI.create("/api/v1/reviews/" + created.id())).body(created);
+        return ResponseEntity.created(URI.create("/ServiceHub/v1/reviews/" + created.id())).body(created);
     }
 }

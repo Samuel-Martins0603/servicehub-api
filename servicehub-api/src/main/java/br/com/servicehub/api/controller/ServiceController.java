@@ -33,7 +33,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/services")
+@RequestMapping("/ServiceHub/v1/services")
 @Tag(name = "Serviços", description = "Catálogo de serviços publicados pelos prestadores")
 public class ServiceController {
 
@@ -75,7 +75,7 @@ public class ServiceController {
     public ResponseEntity<ServiceResponse> create(@Valid @RequestBody ServiceCreateRequest request,
                                                   @AuthenticationPrincipal AuthUser actor) {
         ServiceResponse created = serviceItemService.create(request, actor);
-        return ResponseEntity.created(URI.create("/api/v1/services/" + created.id())).body(created);
+        return ResponseEntity.created(URI.create("/ServiceHub/v1/services/" + created.id())).body(created);
     }
 
     @PutMapping("/{id}")

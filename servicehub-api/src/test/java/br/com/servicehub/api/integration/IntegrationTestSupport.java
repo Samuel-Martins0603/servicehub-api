@@ -65,7 +65,7 @@ abstract class IntegrationTestSupport {
 
     /** Cadastra e devolve o id do usuario. */
     protected long register(String email, String role) throws Exception {
-        MvcResult result = mockMvc.perform(jsonBody(post("/api/v1/auth/register"),
+        MvcResult result = mockMvc.perform(jsonBody(post("/ServiceHub/v1/auth/register"),
                         Map.of("fullName", "Usuario Teste", "email", email, "password", PASSWORD, "role", role)))
                 .andExpect(status().isCreated())
                 .andReturn();
@@ -73,7 +73,7 @@ abstract class IntegrationTestSupport {
     }
 
     protected String login(String email, String password) throws Exception {
-        MvcResult result = mockMvc.perform(jsonBody(post("/api/v1/auth/login"),
+        MvcResult result = mockMvc.perform(jsonBody(post("/ServiceHub/v1/auth/login"),
                         Map.of("email", email, "password", password)))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -92,12 +92,12 @@ abstract class IntegrationTestSupport {
     }
 
     protected long meId(String token) throws Exception {
-        MvcResult result = mockMvc.perform(authed(get("/api/v1/auth/me"), token)).andExpect(status().isOk()).andReturn();
+        MvcResult result = mockMvc.perform(authed(get("/ServiceHub/v1/auth/me"), token)).andExpect(status().isOk()).andReturn();
         return read(result, "$.id");
     }
 
     protected long createService(String providerToken, String price) throws Exception {
-        MvcResult result = mockMvc.perform(authed(jsonBody(post("/api/v1/services"),
+        MvcResult result = mockMvc.perform(authed(jsonBody(post("/ServiceHub/v1/services"),
                         Map.of("title", "Instalação elétrica residencial", "description", "Tomadas, disjuntores e fiação",
                                 "price", price, "category", "ELETRICA")), providerToken))
                 .andExpect(status().isCreated())
@@ -106,7 +106,7 @@ abstract class IntegrationTestSupport {
     }
 
     protected long createOrder(String clientToken, long serviceId) throws Exception {
-        MvcResult result = mockMvc.perform(authed(jsonBody(post("/api/v1/service-requests"),
+        MvcResult result = mockMvc.perform(authed(jsonBody(post("/ServiceHub/v1/service-requests"),
                         Map.of("serviceId", serviceId, "notes", "Apartamento 302")), clientToken))
                 .andExpect(status().isCreated())
                 .andReturn();
@@ -114,7 +114,7 @@ abstract class IntegrationTestSupport {
     }
 
     protected void changeStatus(String token, long orderId, String status, int expectedHttp) throws Exception {
-        mockMvc.perform(authed(jsonBody(patch("/api/v1/service-requests/" + orderId + "/status"),
+        mockMvc.perform(authed(jsonBody(patch("/ServiceHub/v1/service-requests/" + orderId + "/status"),
                         Map.of("status", status)), token))
                 .andExpect(status().is(expectedHttp));
     }
@@ -128,7 +128,7 @@ abstract class IntegrationTestSupport {
         if (active != null) {
             body.put("active", active);
         }
-        mockMvc.perform(authed(jsonBody(put("/api/v1/services/" + serviceId), body), token))
+        mockMvc.perform(authed(jsonBody(put("/ServiceHub/v1/services/" + serviceId), body), token))
                 .andExpect(status().is(expectedHttp));
     }
 }

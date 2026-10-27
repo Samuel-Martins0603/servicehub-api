@@ -56,7 +56,7 @@ mvn verify
 ## Fluxo completo (curl)
 
 ```bash
-API=http://localhost:8090/api/v1
+API=http://localhost:8090/ServiceHub/v1
 curl -s -X POST $API/auth/register -H 'Content-Type: application/json' \
   -d '{"fullName":"Maria Silva","email":"maria@email.com","password":"Senha123","role":"PROVIDER"}'
 TOKEN=$(curl -s -X POST $API/auth/login -H 'Content-Type: application/json' \
@@ -65,7 +65,7 @@ curl -s -X POST $API/services -H "Authorization: Bearer $TOKEN" -H 'Content-Type
   -d '{"title":"Instalação elétrica residencial","price":150.00,"category":"ELETRICA"}'
 ```
 
-## Endpoints (prefixo `/api/v1`)
+## Endpoints (prefixo `/ServiceHub/v1`)
 
 | Grupo | Rotas | Acesso |
 |---|---|---|

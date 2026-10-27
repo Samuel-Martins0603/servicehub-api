@@ -41,3 +41,10 @@
 - **Decisão:** `POST /graphql` expõe só consultas ao catálogo público e reaproveita `ServiceItemService`, então
   RN12 (inativo some) e a paginação máxima de 100 valem igual ao REST.
 - **Consequência:** sem mutations, a superfície de ataque do GraphQL é mínima e não exige token.
+
+## 7. Prefixo de versionamento `/ServiceHub/v1`
+- **Problema:** o Mapa (seção 5) usa `/api/v1`, mas a equipe definiu o versionamento por path como `/ServiceHub/v1`.
+- **Decisão:** todas as rotas REST ficam sob `/ServiceHub/v1` (controllers, regras da `SecurityConfig`, OpenAPI e testes).
+  `/docs`, `/api-docs`, `/actuator/*` e `/graphql` continuam fora do prefixo.
+- **Consequência:** clientes e a bancada de testes devem chamar `/ServiceHub/v1/...`. Para voltar ao `/api/v1`
+  basta trocar o prefixo nos controllers e na `SecurityConfig`.

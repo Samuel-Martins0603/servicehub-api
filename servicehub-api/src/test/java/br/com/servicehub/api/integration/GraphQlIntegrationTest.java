@@ -67,7 +67,7 @@ class GraphQlIntegrationTest extends IntegrationTestSupport {
     void inactiveServiceIsNullForThePublic() throws Exception {
         String provider = tokenFor("PROVIDER");
         long serviceId = createService(provider, "150.00");
-        mockMvc.perform(authed(delete("/api/v1/services/" + serviceId), provider)).andExpect(status().isNoContent());
+        mockMvc.perform(authed(delete("/ServiceHub/v1/services/" + serviceId), provider)).andExpect(status().isNoContent());
 
         String body = graphql("{ service(id: " + serviceId + ") { id title } }");
 

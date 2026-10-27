@@ -55,13 +55,13 @@ public class SecurityConfig {
                         .accessDeniedHandler(accessDeniedHandler))
                 .authorizeHttpRequests(auth -> auth
                         // rotas publicas (Mapa, secao 10)
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/register", "/api/v1/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/ServiceHub/v1/auth/register", "/ServiceHub/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET,
-                                "/api/v1/services",
-                                "/api/v1/services/{id}",
-                                "/api/v1/services/{id}/reviews",
-                                "/api/v1/reviews/{id}",
-                                "/api/v1/info").permitAll()
+                                "/ServiceHub/v1/services",
+                                "/ServiceHub/v1/services/{id}",
+                                "/ServiceHub/v1/services/{id}/reviews",
+                                "/ServiceHub/v1/reviews/{id}",
+                                "/ServiceHub/v1/info").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
                         .requestMatchers("/docs", "/docs/**", "/api-docs", "/api-docs/**",
                                 "/swagger-ui/**", "/swagger-ui.html").permitAll()

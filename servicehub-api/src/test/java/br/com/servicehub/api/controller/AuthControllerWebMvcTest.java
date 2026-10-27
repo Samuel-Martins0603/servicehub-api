@@ -39,10 +39,10 @@ class AuthControllerWebMvcTest {
         when(authService.register(any())).thenReturn(new UserResponse(7L, "Maria Silva", "maria.silva@email.com",
                 Role.PROVIDER, null, null, null, true, null, null));
 
-        mockMvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
+        mockMvc.perform(post("/ServiceHub/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
                         {"fullName":"Maria Silva","email":"maria.silva@email.com","password":"Senha123","role":"PROVIDER"}"""))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/v1/users/7"))
+                .andExpect(header().string("Location", "/ServiceHub/v1/users/7"))
                 .andExpect(jsonPath("$.id").value(7))
                 .andExpect(jsonPath("$.password").doesNotExist())
                 .andExpect(jsonPath("$.passwordHash").doesNotExist());
@@ -51,14 +51,14 @@ class AuthControllerWebMvcTest {
     @Test
     @DisplayName("Validação: campos inválidos respondem 400 em ProblemDetail com a lista errors")
     void invalidBodyReturnsProblemDetailWithErrors() throws Exception {
-        mockMvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
+        mockMvc.perform(post("/ServiceHub/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
                         {"fullName":"M","email":"nao-e-email","password":"fraca","role":"CLIENT"}"""))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith("application/problem+json"))
                 .andExpect(jsonPath("$.type").value("urn:servicehub:problem:validation-error"))
                 .andExpect(jsonPath("$.title").value("Dados inválidos"))
                 .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.instance").value("/api/v1/auth/register"))
+                .andExpect(jsonPath("$.instance").value("/ServiceHub/v1/auth/register"))
                 .andExpect(jsonPath("$.timestamp").exists())
                 .andExpect(jsonPath("$.errors[?(@.field=='fullName')]").exists())
                 .andExpect(jsonPath("$.errors[?(@.field=='email')]").exists())
@@ -68,12 +68,12 @@ class AuthControllerWebMvcTest {
     @Test
     @DisplayName("Validação: senha sem maiúscula ou sem número é rejeitada (regra do Mapa)")
     void passwordRuleIsEnforced() throws Exception {
-        mockMvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
+        mockMvc.perform(post("/ServiceHub/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
                         {"fullName":"Maria Silva","email":"maria@email.com","password":"semmaiuscula1","role":"CLIENT"}"""))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors[?(@.field=='password')]").exists());
 
-        mockMvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
+        mockMvc.perform(post("/ServiceHub/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
                         {"fullName":"Maria Silva","email":"maria@email.com","password":"SemNumeroAqui","role":"CLIENT"}"""))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors[?(@.field=='password')]").exists());
@@ -82,7 +82,7 @@ class AuthControllerWebMvcTest {
     @Test
     @DisplayName("Validação: JSON malformado responde 400 em ProblemDetail")
     void malformedJsonReturns400() throws Exception {
-        mockMvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("{ isto nao e json"))
+        mockMvc.perform(post("/ServiceHub/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("{ isto nao e json"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith("application/problem+json"))
                 .andExpect(jsonPath("$.type").value("urn:servicehub:problem:validation-error"));
@@ -91,7 +91,7 @@ class AuthControllerWebMvcTest {
     @Test
     @DisplayName("Validação: enum desconhecido responde 400 e o detail lista os valores aceitos")
     void unknownEnumListsAcceptedValues() throws Exception {
-        mockMvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
+        mockMvc.perform(post("/ServiceHub/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
                         {"fullName":"Maria Silva","email":"maria@email.com","password":"Senha123","role":"SUPERUSER"}"""))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.type").value("urn:servicehub:problem:validation-error"))
@@ -105,7 +105,7 @@ class AuthControllerWebMvcTest {
         when(authService.register(any())).thenReturn(new UserResponse(1L, "Maria Silva", "maria@email.com",
                 Role.CLIENT, null, null, null, true, null, null));
 
-        mockMvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
+        mockMvc.perform(post("/ServiceHub/v1/auth/register").contentType(MediaType.APPLICATION_JSON).content("""
                         {"id":999,"active":false,"fullName":"Maria Silva","email":"maria@email.com",
                          "password":"Senha123","role":"CLIENT"}"""))
                 .andExpect(status().isCreated());

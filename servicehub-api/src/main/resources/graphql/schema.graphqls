@@ -2,7 +2,7 @@
 # A lista de ServiceCategory precisa ser identica a do enum Java e a do CHECK da migracao V3.
 
 type Query {
-    "Lista servicos ativos (mesmas regras do GET /api/v1/services). size maximo: 100."
+    "Lista servicos ativos (mesmas regras do GET /ServiceHub/v1/services). size maximo: 100."
     services(page: Int = 0, size: Int = 20, category: ServiceCategory, providerId: ID,
              minPrice: Float, maxPrice: Float, q: String): ServicePage!
     "Busca um servico pelo id. Inativo (para o publico) ou inexistente retorna null."

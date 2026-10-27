@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/ServiceHub/v1/auth")
 @Tag(name = "Autenticação", description = "Cadastro, login (JWT) e usuário autenticado")
 public class AuthController {
 
@@ -42,7 +42,7 @@ public class AuthController {
     @ProblemResponses({400, 409, 500})
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
         UserResponse created = authService.register(request);
-        return ResponseEntity.created(URI.create("/api/v1/users/" + created.id())).body(created);
+        return ResponseEntity.created(URI.create("/ServiceHub/v1/users/" + created.id())).body(created);
     }
 
     @PublicEndpoint

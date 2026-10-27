@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/ServiceHub/v1/users")
 @Tag(name = "Usuários", description = "Gestão de usuários (perfil próprio ou ADMIN)")
 public class UserController {
 

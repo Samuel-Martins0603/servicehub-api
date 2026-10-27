@@ -48,7 +48,7 @@ public class OpenApiConfig {
                 .addProperty("title", new StringSchema().example("Dados inválidos"))
                 .addProperty("status", new IntegerSchema().example(400))
                 .addProperty("detail", new StringSchema().example("Um ou mais campos estão inválidos."))
-                .addProperty("instance", new StringSchema().example("/api/v1/services"))
+                .addProperty("instance", new StringSchema().example("/ServiceHub/v1/services"))
                 .addProperty("timestamp", new StringSchema().example("2026-11-05T17:30:12Z"))
                 .addProperty("errors", new ArraySchema().items(new ObjectSchema()
                         .addProperty("field", new StringSchema().example("price"))

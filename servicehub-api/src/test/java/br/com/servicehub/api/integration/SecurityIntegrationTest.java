@@ -25,21 +25,21 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
 
     @ParameterizedTest(name = "{0} {1} sem token responde 401")
     @CsvSource({
-            "GET,/api/v1/auth/me",
-            "GET,/api/v1/users",
-            "GET,/api/v1/users/1",
-            "PUT,/api/v1/users/1",
-            "DELETE,/api/v1/users/1",
-            "PATCH,/api/v1/users/1/role",
-            "PATCH,/api/v1/users/1/active",
-            "POST,/api/v1/services",
-            "PUT,/api/v1/services/1",
-            "DELETE,/api/v1/services/1",
-            "POST,/api/v1/service-requests",
-            "GET,/api/v1/service-requests",
-            "GET,/api/v1/service-requests/1",
-            "PATCH,/api/v1/service-requests/1/status",
-            "POST,/api/v1/service-requests/1/reviews",
+            "GET,/ServiceHub/v1/auth/me",
+            "GET,/ServiceHub/v1/users",
+            "GET,/ServiceHub/v1/users/1",
+            "PUT,/ServiceHub/v1/users/1",
+            "DELETE,/ServiceHub/v1/users/1",
+            "PATCH,/ServiceHub/v1/users/1/role",
+            "PATCH,/ServiceHub/v1/users/1/active",
+            "POST,/ServiceHub/v1/services",
+            "PUT,/ServiceHub/v1/services/1",
+            "DELETE,/ServiceHub/v1/services/1",
+            "POST,/ServiceHub/v1/service-requests",
+            "GET,/ServiceHub/v1/service-requests",
+            "GET,/ServiceHub/v1/service-requests/1",
+            "PATCH,/ServiceHub/v1/service-requests/1/status",
+            "POST,/ServiceHub/v1/service-requests/1/reviews",
             "GET,/actuator/metrics",
             "GET,/actuator/prometheus"
     })
@@ -57,27 +57,27 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
     @DisplayName("Segurança: token inválido, adulterado ou mal formado responde 401")
     void invalidTokensAreRejected() throws Exception {
         String valid = tokenFor("CLIENT");
-        mockMvc.perform(get("/api/v1/auth/me").header("Authorization", "Bearer lixo.lixo.lixo"))
+        mockMvc.perform(get("/ServiceHub/v1/auth/me").header("Authorization", "Bearer lixo.lixo.lixo"))
                 .andExpect(status().isUnauthorized());
-        mockMvc.perform(get("/api/v1/auth/me").header("Authorization", "Bearer " + valid + "x"))
+        mockMvc.perform(get("/ServiceHub/v1/auth/me").header("Authorization", "Bearer " + valid + "x"))
                 .andExpect(status().isUnauthorized());
-        mockMvc.perform(get("/api/v1/auth/me").header("Authorization", valid))
+        mockMvc.perform(get("/ServiceHub/v1/auth/me").header("Authorization", valid))
                 .andExpect(status().isUnauthorized());
-        mockMvc.perform(authed(get("/api/v1/auth/me"), valid)).andExpect(status().isOk());
+        mockMvc.perform(authed(get("/ServiceHub/v1/auth/me"), valid)).andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Segurança: rotas públicas funcionam sem token")
     void publicRoutesNeedNoToken() throws Exception {
-        mockMvc.perform(get("/api/v1/services")).andExpect(status().isOk());
-        mockMvc.perform(get("/api/v1/info"))
+        mockMvc.perform(get("/ServiceHub/v1/services")).andExpect(status().isOk());
+        mockMvc.perform(get("/ServiceHub/v1/info"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("UP"))
                 .andExpect(jsonPath("$.version").exists())
                 .andExpect(jsonPath("$.message").exists());
         mockMvc.perform(get("/actuator/health")).andExpect(status().isOk());
         mockMvc.perform(get("/api-docs")).andExpect(status().isOk());
-        mockMvc.perform(post("/api/v1/auth/login").contentType("application/json")
+        mockMvc.perform(post("/ServiceHub/v1/auth/login").contentType("application/json")
                         .content("{\"email\":\"ninguem@teste.com\",\"password\":\"x\"}"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.type").value("urn:servicehub:problem:unauthorized"));
@@ -96,12 +96,12 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
     @DisplayName("Autorização por papel: CLIENT não publica serviço (403) e não lista usuários (403)")
     void roleBasedAuthorization() throws Exception {
         String client = tokenFor("CLIENT");
-        mockMvc.perform(authed(jsonBody(post("/api/v1/services"),
+        mockMvc.perform(authed(jsonBody(post("/ServiceHub/v1/services"),
                         Map.of("title", "Serviço", "price", "10.00", "category", "LIMPEZA")), client))
                 .andExpect(status().isForbidden())
                 .andExpect(content().contentTypeCompatibleWith("application/problem+json"));
-        mockMvc.perform(authed(get("/api/v1/users"), client)).andExpect(status().isForbidden());
-        mockMvc.perform(authed(delete("/api/v1/users/1"), client)).andExpect(status().isForbidden());
+        mockMvc.perform(authed(get("/ServiceHub/v1/users"), client)).andExpect(status().isForbidden());
+        mockMvc.perform(authed(delete("/ServiceHub/v1/users/1"), client)).andExpect(status().isForbidden());
     }
 
     @Test
@@ -110,15 +110,15 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
         String email = uniqueEmail("promovido");
         long id = register(email, "CLIENT");
         String token = login(email, PASSWORD);
-        mockMvc.perform(authed(jsonBody(post("/api/v1/services"),
+        mockMvc.perform(authed(jsonBody(post("/ServiceHub/v1/services"),
                         Map.of("title", "Serviço novo", "price", "10.00", "category", "PET")), token))
                 .andExpect(status().isForbidden());
 
         mockMvc.perform(authed(jsonBody(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                        .patch("/api/v1/users/" + id + "/role"), Map.of("role", "PROVIDER")), adminToken()))
+                        .patch("/ServiceHub/v1/users/" + id + "/role"), Map.of("role", "PROVIDER")), adminToken()))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(authed(jsonBody(post("/api/v1/services"),
+        mockMvc.perform(authed(jsonBody(post("/ServiceHub/v1/services"),
                         Map.of("title", "Serviço novo", "price", "10.00", "category", "PET")), token))
                 .andExpect(status().isCreated());
     }
@@ -126,7 +126,7 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
     @Test
     @DisplayName("CORS: libera http://localhost:5173 com os métodos e headers do Mapa; outras origens são recusadas")
     void corsAllowsTheTestBenchOrigin() throws Exception {
-        MvcResult result = mockMvc.perform(options("/api/v1/services")
+        MvcResult result = mockMvc.perform(options("/ServiceHub/v1/services")
                         .header("Origin", "http://localhost:5173")
                         .header("Access-Control-Request-Method", "POST")
                         .header("Access-Control-Request-Headers", "authorization,content-type"))
@@ -137,12 +137,12 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
         assertThat(result.getResponse().getHeader("Access-Control-Allow-Headers").toLowerCase())
                 .contains("authorization").contains("content-type");
 
-        mockMvc.perform(options("/api/v1/services")
+        mockMvc.perform(options("/ServiceHub/v1/services")
                         .header("Origin", "http://site-malicioso.example")
                         .header("Access-Control-Request-Method", "POST"))
                 .andExpect(status().isForbidden());
 
-        mockMvc.perform(get("/api/v1/services").header("Origin", "http://localhost:5173"))
+        mockMvc.perform(get("/ServiceHub/v1/services").header("Origin", "http://localhost:5173"))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Access-Control-Expose-Headers", org.hamcrest.Matchers.containsString("Location")));
     }
@@ -150,13 +150,13 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
     @Test
     @DisplayName("Rastreio: X-Request-Id válido é devolvido; ausente ou inválido gera um UUID")
     void requestIdIsEchoedOrGenerated() throws Exception {
-        mockMvc.perform(get("/api/v1/info").header("X-Request-Id", "minha-requisicao-123"))
+        mockMvc.perform(get("/ServiceHub/v1/info").header("X-Request-Id", "minha-requisicao-123"))
                 .andExpect(header().string("X-Request-Id", "minha-requisicao-123"));
 
-        String generated = mockMvc.perform(get("/api/v1/info")).andReturn().getResponse().getHeader("X-Request-Id");
+        String generated = mockMvc.perform(get("/ServiceHub/v1/info")).andReturn().getResponse().getHeader("X-Request-Id");
         assertThat(generated).matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
 
-        String replaced = mockMvc.perform(get("/api/v1/info").header("X-Request-Id", "x"))
+        String replaced = mockMvc.perform(get("/ServiceHub/v1/info").header("X-Request-Id", "x"))
                 .andReturn().getResponse().getHeader("X-Request-Id");
         assertThat(replaced).isNotEqualTo("x").hasSize(36);
     }
@@ -165,17 +165,17 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
     @DisplayName("Erros: rota inexistente e método não suportado respondem em ProblemDetail (nunca 500)")
     void unknownRouteAndWrongMethodAreProblemDetails() throws Exception {
         String token = tokenFor("CLIENT");
-        mockMvc.perform(authed(get("/api/v1/rota-que-nao-existe"), token))
+        mockMvc.perform(authed(get("/ServiceHub/v1/rota-que-nao-existe"), token))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith("application/problem+json"))
                 .andExpect(jsonPath("$.type").value("urn:servicehub:problem:not-found"))
                 .andExpect(jsonPath("$.timestamp").exists());
 
-        mockMvc.perform(authed(delete("/api/v1/info"), token))
+        mockMvc.perform(authed(delete("/ServiceHub/v1/info"), token))
                 .andExpect(status().isMethodNotAllowed())
                 .andExpect(content().contentTypeCompatibleWith("application/problem+json"));
 
-        mockMvc.perform(authed(get("/api/v1/services/abc"), token))
+        mockMvc.perform(authed(get("/ServiceHub/v1/services/abc"), token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.type").value("urn:servicehub:problem:validation-error"));
     }
@@ -183,10 +183,10 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
     @Test
     @DisplayName("Erros: recurso inexistente responde 404 not-found com instance preenchida")
     void notFoundHasInstance() throws Exception {
-        mockMvc.perform(get("/api/v1/services/99999999"))
+        mockMvc.perform(get("/ServiceHub/v1/services/99999999"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.type").value("urn:servicehub:problem:not-found"))
-                .andExpect(jsonPath("$.instance").value("/api/v1/services/99999999"));
-        mockMvc.perform(get("/api/v1/reviews/99999999")).andExpect(status().isNotFound());
+                .andExpect(jsonPath("$.instance").value("/ServiceHub/v1/services/99999999"));
+        mockMvc.perform(get("/ServiceHub/v1/reviews/99999999")).andExpect(status().isNotFound());
     }
 }

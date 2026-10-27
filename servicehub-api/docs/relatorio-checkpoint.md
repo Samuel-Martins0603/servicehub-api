@@ -14,7 +14,7 @@ maiúscula e 1 número (Bean Validation). Autorização por papel com `@EnableMe
 regras de dono verificadas no service com o usuário do token, o que evita **BOLA** (OWASP API1). Os DTOs de
 entrada não têm `id`, `role`, `providerId`, `clientId` nem `status`, o que evita **mass assignment** (API3), e a
 API só devolve DTOs de saída (sem senha nem hash). Textos livres passam por escape de HTML e as consultas são
-parametrizadas. Foram implementadas as regras de negócio **RN01 a RN13** e o **versionamento por path `/api/v1`**.
+parametrizadas. Foram implementadas as regras de negócio **RN01 a RN13** e o **versionamento por path `/ServiceHub/v1`**.
 Erros seguem o padrão ProblemDetail (RFC 9457), sem stack trace.
 
 ### Aula 9 · JWT, papéis e endpoint alternativo — **pronto**

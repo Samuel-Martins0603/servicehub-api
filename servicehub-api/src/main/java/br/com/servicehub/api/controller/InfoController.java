@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/info")
+@RequestMapping("/ServiceHub/v1/info")
 @Tag(name = "Operação")
 public class InfoController {
 
