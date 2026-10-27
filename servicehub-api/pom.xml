@@ -15,7 +15,7 @@
     <artifactId>servicehub-api</artifactId>
     <version>1.0.0</version>
     <name>servicehub-api</name>
-    <description>ServiceHub API - Ciclo 3 (refatoracao conforme o Mapa de Construcao)</description>
+    <description>ServiceHub API - Ciclo 2 (refatoracao conforme o Mapa de Construcao)</description>
 
     <properties>
         <java.version>17</java.version>

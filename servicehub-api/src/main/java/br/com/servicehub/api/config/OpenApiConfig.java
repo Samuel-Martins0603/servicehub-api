@@ -58,7 +58,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("ServiceHub API")
                         .description("API REST do ServiceHub: prestadores publicam servicos, clientes contratam "
-                                + "(ordens de servico) e avaliam. Ciclo 3: refatoracao conforme o Mapa de Construcao.")
+                                + "(ordens de servico) e avaliam. Ciclo 2: refatoracao conforme o Mapa de Construcao.")
                         .version(version)
                         .contact(new Contact().name("Equipe ServiceHub")))
                 .components(new Components()
