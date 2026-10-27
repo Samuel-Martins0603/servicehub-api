@@ -1,12 +1,14 @@
 package br.com.servicehub.api.model;
 
 /**
- * Categorias de servico (21 valores). A lista precisa ser IDENTICA a do CHECK da migracao V3
- * e a do enum ServiceCategory em graphql/schema.graphqls.
- * ATENCAO: confira com o arquivo servicehub_schema.sql do professor (secao 3 do Mapa).
+ * Categorias de servico: os 21 valores do CHECK chk_services_category do servicehub_schema.sql
+ * (Mapa, secao 3). Precisa ser IDENTICA ao CHECK da migracao V3 e ao enum de graphql/schema.graphqls.
+ * Nova categoria = nova migracao.
  */
 public enum ServiceCategory {
-    ELETRICA, HIDRAULICA, LIMPEZA, PINTURA, JARDINAGEM, MARCENARIA, ALVENARIA,
-    SUPORTE_TI, AULAS_PARTICULARES, BELEZA, SAUDE_BEM_ESTAR, TRANSPORTE, MUDANCA,
-    CLIMATIZACAO, CHAVEIRO, DEDETIZACAO, CUIDADOR, PET, EVENTOS, FOTOGRAFIA, OUTROS
+    LIMPEZA, DIARISTA, ENCANAMENTO, ELETRICA, JARDINAGEM, PINTURA,
+    MARCENARIA, PEDREIRO, DEDETIZACAO, AR_CONDICIONADO, CHAVEIRO,
+    MONTAGEM_MOVEIS, MUDANCA, SUPORTE_TECNICO, MANUTENCAO_COMPUTADORES,
+    DESENVOLVIMENTO_SOFTWARE, REDES_E_INFRAESTRUTURA, SEGURANCA_DIGITAL,
+    RECUPERACAO_DE_DADOS, CONSULTORIA_TI, OUTROS
 }

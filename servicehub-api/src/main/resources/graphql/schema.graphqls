@@ -1,5 +1,5 @@
 # Endpoint alternativo GraphQL (POST /graphql). Somente leitura do catalogo publico.
-# A lista de ServiceCategory precisa ser identica a do enum Java e a do CHECK da migracao V3.
+# A lista de ServiceCategory vem do servicehub_schema.sql e precisa ser identica a do enum Java e a do CHECK da V3.
 
 type Query {
     "Lista servicos ativos (mesmas regras do GET /ServiceHub/v1/services). size maximo: 100."
@@ -31,25 +31,25 @@ type Service {
 }
 
 enum ServiceCategory {
-    ELETRICA
-    HIDRAULICA
     LIMPEZA
-    PINTURA
+    DIARISTA
+    ENCANAMENTO
+    ELETRICA
     JARDINAGEM
+    PINTURA
     MARCENARIA
-    ALVENARIA
-    SUPORTE_TI
-    AULAS_PARTICULARES
-    BELEZA
-    SAUDE_BEM_ESTAR
-    TRANSPORTE
-    MUDANCA
-    CLIMATIZACAO
-    CHAVEIRO
+    PEDREIRO
     DEDETIZACAO
-    CUIDADOR
-    PET
-    EVENTOS
-    FOTOGRAFIA
+    AR_CONDICIONADO
+    CHAVEIRO
+    MONTAGEM_MOVEIS
+    MUDANCA
+    SUPORTE_TECNICO
+    MANUTENCAO_COMPUTADORES
+    DESENVOLVIMENTO_SOFTWARE
+    REDES_E_INFRAESTRUTURA
+    SEGURANCA_DIGITAL
+    RECUPERACAO_DE_DADOS
+    CONSULTORIA_TI
     OUTROS
 }

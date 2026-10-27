@@ -52,6 +52,4 @@ Mapa de Construção v1.2. Esta é a lista de tarefas que guiou os commits segui
 
 ## Pendências conhecidas
 
-- A lista dos **21 valores de `ServiceCategory`** foi montada pela equipe; precisa ser conferida com o arquivo
-  `servicehub_schema.sql` do professor (Enum Java, CHECK da V3 e `schema.graphqls` devem ficar idênticos).
 - O repositório ainda precisa ser publicado no GitHub e o pipeline precisa rodar verde no último commit.

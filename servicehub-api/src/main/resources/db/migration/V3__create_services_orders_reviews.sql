@@ -12,13 +12,15 @@ CREATE TABLE services (
     created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_services_provider FOREIGN KEY (provider_id) REFERENCES users (id) ON DELETE RESTRICT,
-    CONSTRAINT ck_services_price CHECK (price > 0),
-    CONSTRAINT ck_services_category CHECK (category IN (
-        'ELETRICA', 'HIDRAULICA', 'LIMPEZA', 'PINTURA', 'JARDINAGEM', 'MARCENARIA', 'ALVENARIA',
-        'SUPORTE_TI', 'AULAS_PARTICULARES', 'BELEZA', 'SAUDE_BEM_ESTAR', 'TRANSPORTE', 'MUDANCA',
-        'CLIMATIZACAO', 'CHAVEIRO', 'DEDETIZACAO', 'CUIDADOR', 'PET', 'EVENTOS', 'FOTOGRAFIA', 'OUTROS'))
+    CONSTRAINT chk_services_price CHECK (price > 0),
+    CONSTRAINT chk_services_category CHECK (category IN (
+        'LIMPEZA', 'DIARISTA', 'ENCANAMENTO', 'ELETRICA', 'JARDINAGEM', 'PINTURA',
+        'MARCENARIA', 'PEDREIRO', 'DEDETIZACAO', 'AR_CONDICIONADO', 'CHAVEIRO', 'MONTAGEM_MOVEIS',
+        'MUDANCA', 'SUPORTE_TECNICO', 'MANUTENCAO_COMPUTADORES', 'DESENVOLVIMENTO_SOFTWARE', 'REDES_E_INFRAESTRUTURA', 'SEGURANCA_DIGITAL',
+        'RECUPERACAO_DE_DADOS', 'CONSULTORIA_TI', 'OUTROS'))
 );
 CREATE INDEX idx_services_provider ON services (provider_id);
+-- No schema do professor o indice e parcial (WHERE is_active); o H2 nao suporta indice parcial.
 CREATE INDEX idx_services_category ON services (category);
 
 -- total_price e uma COPIA do preco no momento da contratacao (RN07).
@@ -34,8 +36,8 @@ CREATE TABLE service_requests (
     updated_at   TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_requests_service FOREIGN KEY (service_id) REFERENCES services (id) ON DELETE RESTRICT,
     CONSTRAINT fk_requests_client FOREIGN KEY (client_id) REFERENCES users (id) ON DELETE RESTRICT,
-    CONSTRAINT ck_requests_status CHECK (status IN ('PENDING', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED')),
-    CONSTRAINT ck_requests_total_price CHECK (total_price >= 0)
+    CONSTRAINT chk_requests_status CHECK (status IN ('PENDING', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED')),
+    CONSTRAINT chk_requests_price CHECK (total_price > 0)
 );
 CREATE INDEX idx_requests_service ON service_requests (service_id);
 CREATE INDEX idx_requests_client ON service_requests (client_id);
@@ -49,10 +51,10 @@ CREATE TABLE reviews (
     rating      SMALLINT    NOT NULL,
     comment     ${textType},
     created_at  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT uq_reviews_request UNIQUE (request_id),
+    CONSTRAINT uk_reviews_request UNIQUE (request_id),
     CONSTRAINT fk_reviews_request FOREIGN KEY (request_id) REFERENCES service_requests (id) ON DELETE RESTRICT,
     CONSTRAINT fk_reviews_reviewer FOREIGN KEY (reviewer_id) REFERENCES users (id) ON DELETE RESTRICT,
-    CONSTRAINT ck_reviews_rating CHECK (rating BETWEEN 1 AND 5)
+    CONSTRAINT chk_reviews_rating CHECK (rating BETWEEN 1 AND 5)
 );
 CREATE INDEX idx_reviews_reviewer ON reviews (reviewer_id);
 

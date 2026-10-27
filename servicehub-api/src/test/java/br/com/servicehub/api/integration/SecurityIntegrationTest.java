@@ -111,7 +111,7 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
         long id = register(email, "CLIENT");
         String token = login(email, PASSWORD);
         mockMvc.perform(authed(jsonBody(post("/ServiceHub/v1/services"),
-                        Map.of("title", "Serviço novo", "price", "10.00", "category", "PET")), token))
+                        Map.of("title", "Serviço novo", "price", "10.00", "category", "JARDINAGEM")), token))
                 .andExpect(status().isForbidden());
 
         mockMvc.perform(authed(jsonBody(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -119,7 +119,7 @@ class SecurityIntegrationTest extends IntegrationTestSupport {
                 .andExpect(status().isOk());
 
         mockMvc.perform(authed(jsonBody(post("/ServiceHub/v1/services"),
-                        Map.of("title", "Serviço novo", "price", "10.00", "category", "PET")), token))
+                        Map.of("title", "Serviço novo", "price", "10.00", "category", "JARDINAGEM")), token))
                 .andExpect(status().isCreated());
     }
 

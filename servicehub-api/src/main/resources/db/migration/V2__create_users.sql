@@ -13,7 +13,7 @@ CREATE TABLE users (
     is_active     BOOLEAN       NOT NULL DEFAULT TRUE,
     created_at    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT uq_users_email UNIQUE (email),
-    CONSTRAINT ck_users_email_lower CHECK (email = LOWER(email)),
-    CONSTRAINT ck_users_role CHECK (role IN ('ADMIN', 'PROVIDER', 'CLIENT'))
+    CONSTRAINT uk_users_email UNIQUE (email),
+    CONSTRAINT chk_users_email_low CHECK (email = LOWER(email)),
+    CONSTRAINT chk_users_role CHECK (role IN ('ADMIN', 'PROVIDER', 'CLIENT'))
 );
