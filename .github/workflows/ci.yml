@@ -14,6 +14,8 @@ jobs:
           distribution: temurin
           java-version: "17"
           cache: maven
+          cache-dependency-path: servicehub-api/pom.xml
       # Testcontainers usa o Docker do runner; os testes definem o proprio JWT_SECRET.
       - name: Build e testes
+        working-directory: servicehub-api
         run: mvn -B verify
