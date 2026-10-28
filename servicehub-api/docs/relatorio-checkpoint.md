@@ -1,7 +1,7 @@
 # Relatório de Checkpoint — ServiceHub API
 
 ## 1. Identificação
-- **Repositório:** _(colar aqui o link do GitHub depois do push)_
+- **Repositório:** https://github.com/Samuel-Martins0603/servicehub-api (branch `ciclo2`)
 - **Último commit:** 27/10/2026
 
 ## 2. Estado das entregas
