@@ -42,7 +42,7 @@ class GraphQlIntegrationTest extends IntegrationTestSupport {
         assertThat(JsonPath.<String>read(body, "$.data.service.title")).isEqualTo("Instalação elétrica residencial");
         assertThat(JsonPath.<String>read(body, "$.data.service.category")).isEqualTo("ELETRICA");
         assertThat(JsonPath.<Boolean>read(body, "$.data.service.active")).isTrue();
-        assertThat(JsonPath.<Object>read(body, "$.errors")).isNull();
+        assertThat(body).doesNotContain("\"errors\"");
     }
 
     @Test
