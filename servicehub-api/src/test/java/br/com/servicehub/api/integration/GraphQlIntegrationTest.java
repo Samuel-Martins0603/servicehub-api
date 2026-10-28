@@ -28,7 +28,7 @@ class GraphQlIntegrationTest extends IntegrationTestSupport {
                 ? mockMvc.perform(asyncDispatch(started)).andReturn()
                 : started;
         assertThat(done.getResponse().getStatus()).isEqualTo(200);
-        return done.getResponse().getContentAsString();
+        return done.getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
     }
 
     @Test
