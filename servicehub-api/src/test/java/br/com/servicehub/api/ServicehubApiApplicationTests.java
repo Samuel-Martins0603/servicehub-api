@@ -2,18 +2,18 @@ package br.com.servicehub.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
- * Teste de contexto: se o Spring conseguir subir todos os beans (Controller,
- * Service, Repository, DataSource H2, configuração do OpenAPI) sem lançar
- * exceção, este teste passa. É o primeiro "alarme" que pega erro de
- * configuração antes mesmo de testar regra de negócio.
+ * Teste de contexto: sobe tudo (Flyway aplica V1..V3 e o Hibernate valida as entidades contra o schema
+ * com ddl-auto=validate). Se faltar uma migracao para uma coluna da entidade, este teste falha.
  */
 @SpringBootTest
+@ActiveProfiles("test")
 class ServicehubApiApplicationTests {
 
     @Test
     void contextLoads() {
-        // Corpo vazio de propósito: o próprio carregamento do contexto é o teste.
+        // o proprio carregamento do contexto e o teste
     }
 }
